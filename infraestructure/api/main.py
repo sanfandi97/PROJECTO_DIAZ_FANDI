@@ -1,8 +1,10 @@
-"""Actividad 2: API de inferencia. Sirve el modelo con el alias `champion` de MLflow.
+"""Actividad 3: API de inferencia. Sirve el modelo con el alias de MLflow indicado en MODELO_ALIAS.
 
-Ejecución (desde la raíz de actividad-2, con MLFLOW_TRACKING_URI definida):
+Ejecución (desde la raíz de actividad-3, con MLFLOW_TRACKING_URI definida):
     poetry run uvicorn infraestructure.api.main:app --port 8000
 Documentación interactiva: http://localhost:8000/docs
+
+El alias por defecto es `champion`. Puedes servir otro alias (por ejemplo, `produccion`) con la variable MODELO_ALIAS.
 
 El modelo se carga al arrancar la API. Si el pipeline de entrenamiento asigna un nuevo
 champion, hay que reiniciar la API para que lo use.
@@ -20,9 +22,11 @@ from pydantic import BaseModel, Field
 with open("configs/config.yaml", encoding="utf-8") as f:
     cfg = yaml.safe_load(f)
 NOMBRE_MODELO = cfg["registro"]["nombre_modelo"]
+ALIAS = os.environ.get("MODELO_ALIAS", "champion")
+
 mlflow.set_tracking_uri(os.environ.get("MLFLOW_TRACKING_URI", cfg["mlflow"]["tracking_uri"]))
-modelo = mlflow.sklearn.load_model(f"models:/{NOMBRE_MODELO}@champion")
-VERSION = MlflowClient().get_model_version_by_alias(NOMBRE_MODELO, "champion").version
+modelo = mlflow.sklearn.load_model(f"models:/{NOMBRE_MODELO}@{ALIAS}")
+VERSION = MlflowClient().get_model_version_by_alias(NOMBRE_MODELO, ALIAS).version
 
 app = FastAPI(title="API de churn", description="Predicción de abandono de clientes con el modelo champion.")
 

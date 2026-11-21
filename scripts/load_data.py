@@ -1,9 +1,9 @@
 """Carga el dataset de churn, valida sus columnas y muestra su tamaño.
 
 Por defecto lee `datos.ruta` de configs/config.yaml. Las rutas se resuelven desde el
-directorio de trabajo, así que ejecuta el script desde la raíz de actividad-2.
+directorio de trabajo, así que ejecuta el script desde la raíz de actividad-3.
 
-Ejecución (desde la raíz de actividad-2):
+Ejecución (desde la raíz de actividad-3):
     poetry run python scripts/load_data.py
 
 Para usarla desde un flow:
